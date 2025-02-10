@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MissMe?</title>
+    <style>
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fireworks {
+            0% { opacity: 1; transform: scale(0.5); }
+            100% { opacity: 0; transform: scale(1.5); }
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffebee;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .heart-background {
+            transform: translate(-50%, -50%);
+            width: 100vmin;
+            height: 100vmin;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff6b6b"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.15;
+            animation: heartbeat 1.5s infinite;
+            z-index: 1;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            color: #d32f2f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #yesBtn {
+            background-color: #d32f2f;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        #noBtn:hover {
+            background-color: #e53935;
+        }
+
+        #yesBtn:hover {
+            background-color: #c62828;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 3;
+        }
+
+        .popup h2 {
+            color: #d32f2f;
+            margin-bottom: 10px;
+        }
+
+        .fireworks {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background-color: transparent;
+            border-radius: 50%;
+            border: 10px solid rgba(255, 165, 0, 0.8);
+            opacity: 0;
+            animation: fireworks 2s forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-background">
+    </div>
+
+    <div class="container">
+        <h1>คิดถึงกันไหม? 💖</h1>
+        <button id="yesBtn">Yes</button>
+        <button id="noBtn">No</button>
+    </div>
+
+    <div class="popup" id="popup">
+        <h2>เย้! เค้ารู้ว่าเธอก็คิดถึงเค้าเหมือนกันนนนนน 💕🎉</h2>
+        <p>ไว้เจอกันนะ💖!</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@latest/dist/fireworks.js"></script>
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const popup = document.getElementById('popup');
+        const container = document.querySelector('.container');
+
+        noBtn.addEventListener('click', () => {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const randomX = Math.random() * (screenWidth - noBtn.offsetWidth);
+            const randomY = Math.random() * (screenHeight - noBtn.offsetHeight);
+
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        });
+
+        yesBtn.addEventListener('click', () => {
+            popup.style.display = 'block';
+            container.style.display = 'none';  
+
+            const containerElement = document.body;
+            const fireworks = new Fireworks(containerElement, {
+                autoresize: true,
+                opacity: 0.5,
+                speed: 3,
+                acceleration: 1.05,
+                friction: 0.98,
+                gravity: 1.5,
+                particles: 100,
+                trace: 3,
+                explosion: 6,
+                intensity: 30,
+                flicker: true,
+                boundaries: {
+                    width: containerElement.clientWidth,
+                    height: containerElement.clientHeight
+                },
+                sound: {
+                    enable: true,
+                    files: [
+                        "https://fireworks.js.org/sound/rocket.mp3",
+                        "https://fireworks.js.org/sound/explosion.mp3",
+                        "https://fireworks.js.org/sound/crackle.mp3"
+                    ],
+                    volume: { min: 1, max: 5 }
+                }
+            });
+
+            fireworks.start();
+
+            setTimeout(() => {
+                window.close();
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
